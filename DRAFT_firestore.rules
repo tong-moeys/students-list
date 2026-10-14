@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'moeystong@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidStudent(data) {
+      return data.keys().hasAll(['studentCode', 'lastName', 'firstName', 'gender', 'authorId']) &&
+        data.keys().hasOnly([
+          'id', 'studentCode', 'lastName', 'firstName', 'gender', 'dob', 'phone', 'nationality',
+          'pobProvince', 'pobDistrict', 'pobCommune', 'pobVillage',
+          'curProvince', 'curDistrict', 'curCommune', 'curVillage',
+          'academicYear', 'previousGrade', 'enrollmentDate', 'disabilityType',
+          'supportReading', 'supportMath', 'bookKhmer', 'bookMath',
+          'isPoorFamily', 'equityCard', 'ethnicMinority', 'specialCharacteristics',
+          'weightS1', 'heightS1', 'weightS2', 'heightS2',
+          'eyeLeft', 'eyeRight', 'eyeBoth', 'eyeResult', 'eyePrescription', 'eyeDevice',
+          'earLeft', 'earRight', 'earBoth', 'earResult', 'earPrescription', 'earDevice',
+          'vaccineList',
+          'fatherLastName', 'fatherFirstName', 'fatherPhone', 'fatherOccupation',
+          'fatherProvince', 'fatherDistrict', 'fatherCommune', 'fatherVillage',
+          'motherLastName', 'motherFirstName', 'motherPhone', 'motherOccupation',
+          'motherProvince', 'motherDistrict', 'motherCommune', 'motherVillage',
+          'guardianType', 'guardianLastName', 'guardianFirstName', 'guardianGender',
+          'guardianPhone', 'guardianOccupation', 'guardianAddress',
+          'authorId', 'authorEmail', 'createdAt', 'updatedAt'
+        ]) &&
+        data.authorId == request.auth.uid &&
+        data.studentCode is string && data.studentCode.size() <= 64 &&
+        data.lastName is string && data.lastName.size() <= 100 &&
+        data.firstName is string && data.firstName.size() <= 100 &&
+        data.gender is string && data.gender.size() <= 20;
+    }
+
+    // User profiles collection
+    match /users/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isSignedIn() && isAdmin();
+      allow create: if isSignedIn() && isValidId(userId) && request.auth.uid == userId &&
+        incoming().uid == request.auth.uid &&
+        (!('role' in incoming()) || incoming().role != 'admin' || isAdmin());
+      allow update: if isSignedIn() && isValidId(userId) &&
+        (request.auth.uid == userId || isAdmin()) &&
+        incoming().uid == existing().uid &&
+        (!incoming().diff(existing()).affectedKeys().hasAny(['role']) || isAdmin());
+      allow delete: if isSignedIn() && isValidId(userId) && isAdmin();
+    }
+
+    // Admins collection
+    match /admins/{adminId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Students collection
+    match /students/{studentId} {
+      allow get: if isSignedIn() && isValidId(studentId);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(studentId) && isValidStudent(incoming());
+      allow update: if isSignedIn() && isValidId(studentId) &&
+        isValidStudent(incoming()) &&
+        incoming().authorId == existing().authorId &&
+        (existing().authorId == request.auth.uid || isAdmin());
+      allow delete: if isSignedIn() && isValidId(studentId) &&
+        (existing().authorId == request.auth.uid || isAdmin());
+    }
+  }
+}

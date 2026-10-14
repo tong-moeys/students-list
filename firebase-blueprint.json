@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Authenticated teacher or school staff user profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["teacher", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "System admin role assignment",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 256 },
+        "grantedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Cambodian standard student record with academic, equity, health, and guardian data",
+      "type": "object",
+      "properties": {
+        "studentCode": { "type": "string", "maxLength": 64 },
+        "lastName": { "type": "string", "maxLength": 100 },
+        "firstName": { "type": "string", "maxLength": 100 },
+        "gender": { "type": "string", "maxLength": 20 },
+        "dob": { "type": "string", "maxLength": 30 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "nationality": { "type": "string", "maxLength": 50 },
+        "pobProvince": { "type": "string", "maxLength": 100 },
+        "pobDistrict": { "type": "string", "maxLength": 100 },
+        "pobCommune": { "type": "string", "maxLength": 100 },
+        "pobVillage": { "type": "string", "maxLength": 100 },
+        "curProvince": { "type": "string", "maxLength": 100 },
+        "curDistrict": { "type": "string", "maxLength": 100 },
+        "curCommune": { "type": "string", "maxLength": 100 },
+        "curVillage": { "type": "string", "maxLength": 100 },
+        "academicYear": { "type": "string", "maxLength": 30 },
+        "previousGrade": { "type": "string", "maxLength": 50 },
+        "enrollmentDate": { "type": "string", "maxLength": 30 },
+        "disabilityType": { "type": "string", "maxLength": 100 },
+        "supportReading": { "type": "string", "maxLength": 20 },
+        "supportMath": { "type": "string", "maxLength": 20 },
+        "bookKhmer": { "type": "string", "maxLength": 20 },
+        "bookMath": { "type": "string", "maxLength": 20 },
+        "isPoorFamily": { "type": "string", "maxLength": 20 },
+        "equityCard": { "type": "string", "maxLength": 50 },
+        "ethnicMinority": { "type": "string", "maxLength": 50 },
+        "specialCharacteristics": { "type": "string", "maxLength": 250 },
+        "weightS1": { "type": "string", "maxLength": 20 },
+        "heightS1": { "type": "string", "maxLength": 20 },
+        "weightS2": { "type": "string", "maxLength": 20 },
+        "heightS2": { "type": "string", "maxLength": 20 },
+        "eyeLeft": { "type": "string", "maxLength": 30 },
+        "eyeRight": { "type": "string", "maxLength": 30 },
+        "eyeBoth": { "type": "string", "maxLength": 30 },
+        "eyeResult": { "type": "string", "maxLength": 100 },
+        "eyePrescription": { "type": "string", "maxLength": 200 },
+        "eyeDevice": { "type": "string", "maxLength": 100 },
+        "earLeft": { "type": "string", "maxLength": 30 },
+        "earRight": { "type": "string", "maxLength": 30 },
+        "earBoth": { "type": "string", "maxLength": 30 },
+        "earResult": { "type": "string", "maxLength": 100 },
+        "earPrescription": { "type": "string", "maxLength": 200 },
+        "earDevice": { "type": "string", "maxLength": 100 },
+        "vaccineList": { "type": "string", "maxLength": 500 },
+        "fatherLastName": { "type": "string", "maxLength": 100 },
+        "fatherFirstName": { "type": "string", "maxLength": 100 },
+        "fatherPhone": { "type": "string", "maxLength": 50 },
+        "fatherOccupation": { "type": "string", "maxLength": 100 },
+        "fatherProvince": { "type": "string", "maxLength": 100 },
+        "fatherDistrict": { "type": "string", "maxLength": 100 },
+        "fatherCommune": { "type": "string", "maxLength": 100 },
+        "fatherVillage": { "type": "string", "maxLength": 100 },
+        "motherLastName": { "type": "string", "maxLength": 100 },
+        "motherFirstName": { "type": "string", "maxLength": 100 },
+        "motherPhone": { "type": "string", "maxLength": 50 },
+        "motherOccupation": { "type": "string", "maxLength": 100 },
+        "motherProvince": { "type": "string", "maxLength": 100 },
+        "motherDistrict": { "type": "string", "maxLength": 100 },
+        "motherCommune": { "type": "string", "maxLength": 100 },
+        "motherVillage": { "type": "string", "maxLength": 100 },
+        "guardianType": { "type": "string", "maxLength": 50 },
+        "guardianLastName": { "type": "string", "maxLength": 100 },
+        "guardianFirstName": { "type": "string", "maxLength": 100 },
+        "guardianGender": { "type": "string", "maxLength": 20 },
+        "guardianPhone": { "type": "string", "maxLength": 50 },
+        "guardianOccupation": { "type": "string", "maxLength": 100 },
+        "guardianAddress": { "type": "string", "maxLength": 300 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorEmail": { "type": "string", "maxLength": 256 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentCode", "lastName", "firstName", "gender", "authorId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles for authenticated teachers and staff"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "System administrators registry"
+    },
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Students roster and comprehensive health records"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Cambodia Student Information & Health Record System",
+  "description": "Comprehensive student information, academic records, equity status, and health tracking system with Firestore authentication and cloud database.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
